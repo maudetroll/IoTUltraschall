@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\alerts",
+    "\\src\\config",
+    "\\src\\csv",
+    "\\src\\sensor"
+  ],
+  "SelectedNode": "\\src\\sensor\\distance_sensor.py",
+  "PreviewInSolutionExplorer": false
+}

@@ -1,7 +1,7 @@
 {
     "broker_host": "localhost",
     "broker_port": 1883,
-    "config_topic": null,
-    "data_topic": null,
-    "alert_topic": null
+    "config_topic": distanzUltraSchall,
+    "data_topic": distances,
+    "alert_topic": alert_distance
 }

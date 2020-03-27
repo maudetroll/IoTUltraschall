@@ -1,7 +1,17 @@
+import time
+import RPi.GPIO as GPIO
+import datetime
+
 class DistanceSensor:
 
-    #  Initialisierung
     def __init__(self):
+        GPIO.setmode(GPIO.BCM) 
+        Trigger_AusgangsPin = 17
+        Echo_EingangsPin    = 27
+        GPIO.setup(Trigger_AusgangsPin, GPIO.OUT)
+        GPIO.setup(Echo_EingangsPin, GPIO.IN)
+        GPIO.output(Trigger_AusgangsPin, False)
+        sleeptime = 0.8
         pass
 
     #  return Wert als Dictionary entsprechend folgendem JSON:
@@ -12,4 +22,51 @@ class DistanceSensor:
     #     "unit" : "cm"
     #   }
     def read_value (self):
-        pass
+        try:
+            while True:
+                GPIO.output(Trigger_AusgangsPin, True)
+                time.sleep(0.00001)
+                GPIO.output(Trigger_AusgangsPin, False)
+ 
+
+                EinschaltZeit = time.time()
+                while GPIO.input(Echo_EingangsPin) == 0:
+                    EinschaltZeit = time.time()
+ 
+                while GPIO.input(Echo_EingangsPin) == 1:
+                    AusschaltZeit = time.time() 
+ 
+
+                Dauer = AusschaltZeit - EinschaltZeit
+                Abstand = (Dauer * 34300) / 2
+
+                if Abstand < 2 or (round(Abstand) > 300):
+                    # Falls nicht wird eine Fehlermeldung ausgegeben
+                    print("Abstand außerhalb des Messbereich")
+                    print("------------------------------")
+                else:
+
+                    Abstand = format((Dauer * 34300) / 2, '.2f')
+
+                    print("Der Abstand beträgt:", Abstand,("cm"))
+                    print("------------------------------")
+                    timestamp= datetime.datetime.now().isoformat();
+                    print(datetime)
+ 
+                    eintragJSON= {
+                        "sensorId"  : "Ultraschall Sensor KY-050", 
+                        "timestamp" : timestamp,
+                        "distance"  : Abstand,
+                        "unit"      : "cm"
+                        }
+                    print(eintragJSON)
+                    # Pause zwischen den einzelnen Messungen
+                time.sleep(sleeptime)
+
+ 
+# Aufraeumarbeiten nachdem das Programm beendet wurde
+        except KeyboardInterrupt:
+            GPIO.cleanup()
+
+    
+    pass
