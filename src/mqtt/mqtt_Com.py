@@ -2,17 +2,20 @@
 import paho.mqtt.client as mqtt
 import time
 import json
+from config.configuration import Configuration 
 
 class mqttCommunication():
-# hier wurde noch hard gecodet, da muss mein Future-Ich noch was machen:D
-    def __init__(self,broker):
-        #jsonFile=open("/config/brokerConfig.json","r")
-        self.broker="localhost"
-        self.port= 1883
 
-        print("ich wurde erstellt")
+    def __init__(self,broker):
+
+        config= Configuration()
+        self.broker= config.config["broker_host"]
+        self.port= config.config["broker_port"]
+
         pass
+
     def connectToMQTT(self):
+
         self.client= mqtt.Client("iot_User_1")
         self.client.subscribe('distance')
         self.client.connect(self.broker,self.port,60)
@@ -21,6 +24,7 @@ class mqttCommunication():
         
     def disconnectFromMQTT(self):
         pass
+    
     def on_message(self,client, userdata, message):
         msg = str(message.payload.decode("utf-8"))
         print("message received: ", msg)
