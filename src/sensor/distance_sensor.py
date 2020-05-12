@@ -1,7 +1,7 @@
 import time
 import RPi.GPIO as GPIO
 import datetime
-import csv_123.csv_writer
+import dhbw_iot_csv.csv_writer
 import alerts.alert_service
 
 class DistanceSensor:
@@ -16,7 +16,7 @@ class DistanceSensor:
         pass
 
     def read_value (self):
-        writer= csv_123.csv_writer.CsvWriter()
+        writer= dhbw_iot_csv.csv_writer.CsvWriter()
         GPIO.setmode(GPIO.BCM) 
         Trigger_AusgangsPin = 17
         Echo_EingangsPin    = 27

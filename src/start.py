@@ -1,5 +1,5 @@
 import sensor.distance_sensor
-import csv_123.csv_writer
+import dhbw_iot_csv.csv_writer
 import threading
 import time
 import mqtt.mqtt_Com
@@ -13,7 +13,6 @@ class sensorThread (threading.Thread):
         print("Starte Thread mit dem Namen:",self.namen)
         instanz= sensor.distance_sensor.DistanceSensor()
         p=instanz.read_value()
-        #time.sleep(10)
 
     
 class receiveThread(threading.Thread):
