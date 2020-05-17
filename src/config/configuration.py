@@ -1,6 +1,7 @@
 import os
 import json
 
+# Mit Hilfe dieser Klasse können die Inhalte aus der brokerConfig.json ausgelesen werden
 class Configuration:
 
     config ={

@@ -31,9 +31,6 @@ class mqttCommunication():
     def on_message(self,client, userdata, msg):
         AService.AlertService(self.pubsub).set_alert_threshold(float(msg.payload), "cm")
         pass
-        
-#    def disconnectFromMQTT(self):
-#        pass
 
     def on_connect(self,client,userdata,flags,rc):
         print("Connected with result code", str(rc))        
