@@ -1,0 +1,5 @@
+sensorId,timestamp,distance,unit
+Ultraschall Sensor KY-050,2020-05-17T17:37:13.103314,152.64,cm
+Ultraschall Sensor KY-050,2020-05-17T17:37:14.130615,151.71,cm
+Ultraschall Sensor KY-050,2020-05-17T17:37:15.153011,150.85,cm
+Ultraschall Sensor KY-050,2020-05-17T17:37:16.175192,151.08,cm
