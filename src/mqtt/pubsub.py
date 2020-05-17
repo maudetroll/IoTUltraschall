@@ -1,4 +1,5 @@
 import os, threading
+import time
 class Pubsub:
  
     def __init__(self):
@@ -10,6 +11,8 @@ class Pubsub:
                 thread=threading.Thread(target=methode, name=(str("iot-"+topic)+" "+str(methode)), \
                         args=args, kwargs=kwargs)
                 thread.start() 
+                time.sleep(10)
+
 
     def subscribe(self, topic, funktion):
         if not topic in self._topics:
