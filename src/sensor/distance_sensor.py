@@ -18,6 +18,7 @@ class DistanceSensor:
         self.sleeptime = 1
         self.pubsub = pubsub
         self.writer = dhbw_iot_csv.csv_writer.CsvWriter()
+        self.instance= Alarm.AlertService(self.pubsub)
         pass
 # In dieser Funktion werden die Sensordaten ausgelesen und per Funktionsaufruf an die CSV Klasse weitergegeben
 # Ebenso wird per Funktionsaufruf die Alert-Klasse angesprochen, welche Alarme versendet 
@@ -29,27 +30,26 @@ class DistanceSensor:
                 GPIO.output(self.Trigger_AusgangsPin, False)
 
 # Ermittlung der Einschaltzeit und Ausschaltzeit 
-                EinschaltZeit = time.time()
+                t1 = time.time()
                 while GPIO.input(self.Echo_EingangsPin) == 0:
-                    EinschaltZeit = time.time()
-
+                    t1 = time.time()
+                t2 = time.time()
                 while GPIO.input(self.Echo_EingangsPin) == 1:
-                    AusschaltZeit = time.time()
-                Dauer = AusschaltZeit - EinschaltZeit
+                    t2 = time.time()
+                Dauer = t2 - t1
                 Abstand = (Dauer * 34300) / 2
                 Abstand = format((Dauer * 34300) / 2, '.2f')
                 print("Der Abstand beträgt:", Abstand, ("cm"))
                 print("************************")
 # Konvertierung in das ISO 8601-Format laut https://www.it-swarm.dev/de/python/iso-zeit-iso-8601-python/968377307/                 
                 timestamp = datetime.datetime.now().isoformat()
-
                 eintragJSON = {
                     "sensorId": "Ultraschall Sensor KY-050",
                     "timestamp": timestamp,
                     "distance": Abstand,
                     "unit": "cm"
                 }
-# der CSV Writer erhält die Daten, welche dieser in die CSV-Datei schreibt
+# der CSV Writer erhält die Daten, welche dieser in die CSV-Datei schreibt -> egal ob Alarm oder nicht, CSV wird geschrieben
                 self.writer.format_line(eintragJSON)
 # Hiermit werden die Daten als JSON an MQTT weitergegeben und versandt
                 mqtt.mqttCommunication(
@@ -57,10 +57,9 @@ class DistanceSensor:
 
 # sofern der Abstand kleiner als der Mindestabstand ist, so wird ein Alarm ausgesandt
 # dies erfolgt in der AlertService-Klasse
-                instance= Alarm.AlertService(self.pubsub)
-                if(float(Abstand) < float(instance.minimumdistance)):
-#                   alarm = Alarm(self.pubsub)
-                    instance.on_distance_threshold_passed(Abstand)
+                
+                if(float(Abstand) < float(self.instance.minimumdistance)) or (float(Abstand) >float(self.instance.maximumdistance)):
+                    self.instance.on_distance_threshold_passed(Abstand)
 
                 time.sleep(self.sleeptime)
 

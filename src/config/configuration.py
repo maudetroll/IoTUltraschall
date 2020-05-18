@@ -9,7 +9,8 @@ class Configuration:
         "broker_port": None,
         "config_topic": None,
         "data_topic": None,
-        "alert_topic": None
+        "alert_topic": None,
+        "alert_topic_to_high": None
     }
 
     def __init__(self,configpath='brokerConfig.json'):
@@ -23,3 +24,4 @@ class Configuration:
         Configuration.config["config_topic"] = config["config_topic"]
         Configuration.config["data_topic"] = config["data_topic"]
         Configuration.config["alert_topic"] = config["alert_topic"]
+        Configuration.config["alert_topic_to_high"] = config["alert_topic_to_high"]

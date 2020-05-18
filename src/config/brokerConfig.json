@@ -3,5 +3,7 @@
     "broker_port": 1883,
     "config_topic": "distanz_UltraSchall",
     "data_topic": "distances",
-    "alert_topic": "alert_distance"
+    "alert_topic": "alert_distance",
+    "alert_topic_to_high": "alert_distance_to_high"
+
 }

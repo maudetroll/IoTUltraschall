@@ -46,8 +46,16 @@ class mqttCommunication():
     def sendAlarm(self,abstand):
         config= Configuration()
         alert= AService.AlertService(self.pubsub)
-        message= "Alarm, wir haben den Schwellwert von:",alert.minimumdistance," mit",float(abstand),alert.unit," unterschritten"
+        message= "Alarm, wir haben den Schwellwert von:", alert.minimumdistance," mit",float(abstand), alert.unit," unterschritten"
         self.client.publish(config.config["alert_topic"],str(message))
+        pass
+# Diese Funktion sendet die Alarme via MQTT an das entsprechende Topic, in dem Falle alert_distance_to_high
+    def sendAlarm_tohigh(self,abstand):
+        config= Configuration()
+        alert= AService.AlertService(self.pubsub)
+        message= "Alarm, wir haben den Schwellwert von:", alert.maximumdistance," mit",float(abstand), alert.unit," überschritten"
+        self.client.publish(config.config["alert_topic_to_high"],str(message))
+
 
 
 
